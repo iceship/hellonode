@@ -8,10 +8,19 @@ html
     ul
       each topic in topics
         li
-         a(href='/topic/'+topic)= topic
+         a(href='/topic/'+topic.title)= topic.title
     artcle
-      h2= title
-      = description
-    p
-    div
-      a(href='/topic/new') new
+      if topic
+        h2= topic.title
+        = topic.description
+        div= 'by ' + topic.author 
+      else
+        h2 Welcome
+        | This is server Side JavaScript tutorial.
+    ul
+      li
+        a(href='/topic/add') add
+      if topic
+        li
+          a(href='/topic/' + topic.title + '/edit') edit
+      
