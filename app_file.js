@@ -1,14 +1,24 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer({dest: 'uploads/'});
 var fs = require('fs');
-
 var app = express();
+
 app.locals.pretty = true;
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.set('views', './views_file');
 app.set('view engine', 'pug');
 
+app.get('/upload', function(req, res){
+  res.render('upload');
+});
+app.post('/upload', upload.single('uploadfile'), function(req, res){
+  console.log(req.file);
+  res.send('uploaded' + req.file.filename);
+
+});
 app.get('/topic/new', function(req, res){
   fs.readdir('data', function(err, files){
     if(err){
@@ -52,7 +62,7 @@ app.post('/topic', function(req, res){
     }
     //res.send('Success');
     res.redirect('/topic/'+title);
-    
+
   });
 });
 
